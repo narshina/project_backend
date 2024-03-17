@@ -78,7 +78,7 @@ let userSchema=mongoose.Schema(
         },
         category:{
              type:String
-        }
+        },
     }
 )
 let User=mongoose.model('user',userSchema)
