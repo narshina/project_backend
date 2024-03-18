@@ -5,8 +5,12 @@ let notificationschema=mongoose.Schema(
        notification:{
         type:String,
         required:true
+       },
+       userid:{
+        type:String,
+        required:String
        }
     }
 )
-let President=mongoose.model('president',notificationschema)
-export default President
+let Notification=mongoose.model('notification',notificationschema)
+export default Notification

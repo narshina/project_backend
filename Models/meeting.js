@@ -24,5 +24,5 @@ let meetingschema=mongoose.Schema(
         }
     }
 )
-let President=mongoose.model('president',meetingschema)
-export default President
+let meeting=mongoose.model('meeting',meetingschema)
+export default meeting

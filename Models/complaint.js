@@ -1,16 +1,12 @@
 import mongoose from "mongoose";
 
-let newsschema=mongoose.Schema(
+let complaintschema=mongoose.Schema(
     {
-        news:{
+        complaint:{
             type:String,
             required:true
         },
-        date:{
-            type:String,
-            required:true
-        },
-        time:{
+        reply:{
             type:String,
             required:true
         },
@@ -20,5 +16,5 @@ let newsschema=mongoose.Schema(
         }
     }
 )
-let News=mongoose.model('news',newsschema)
-export default News
+let complaint=mongoose.model('complaint',complaintschema)
+export default complaint

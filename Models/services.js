@@ -20,5 +20,5 @@ let serviceschema=mongoose.Schema(
         }
     }
 )
-let Staff=mongoose.model('staff',serviceschema)
-export default Staff
+let services=mongoose.model('services',serviceschema)
+export default services
