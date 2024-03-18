@@ -23,6 +23,18 @@ router.post('/login',async (req,res)=>{
     console.log(user);
     res.json(user)
 })
+router.get('/viewprofile/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    let response=await User.findById(id)
+    console.log(response)
+    res.json(response)
 
+})
+router.put('/editprofile/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(req.body);
+    let response=await User.findByIdAndUpdate(id,req.body)
+})
 
 export default router
