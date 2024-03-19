@@ -1,21 +1,17 @@
 import mongoose from "mongoose";
 import User from "./user.js";
 
-let serviceschema=mongoose.Schema(
+let wardschema=mongoose.Schema(
     {
-        service:{
+        wardnumber:{
             type:String,
             required:true
         },
-        processingTime:{
+        wardname:{
             type:String,
             required:true
         },
-        requirement:{
-            type:String,
-            required:true
-        },
-        fees:{
+        lgd:{
             type:String,
             required:true
         },
@@ -25,5 +21,5 @@ let serviceschema=mongoose.Schema(
         }
     }
 )
-let services=mongoose.model('services',serviceschema)
-export default services
+let ward=mongoose.model('ward',wardschema)
+export default ward

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.js";
 
 let meetingschema=mongoose.Schema(
     {
@@ -19,8 +20,8 @@ let meetingschema=mongoose.Schema(
             required:true
         },
         userid:{
-            type:String,
-            required:true
+            type:mongoose.Types.ObjectId,
+            ref:User
         }
     }
 )

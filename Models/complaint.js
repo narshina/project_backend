@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.js";
 
 let complaintschema=mongoose.Schema(
     {
@@ -8,11 +9,18 @@ let complaintschema=mongoose.Schema(
         },
         reply:{
             type:String,
-            required:true
         },
         userid:{
+            type:mongoose.Types.ObjectId,
+            ref:User
+        },
+        complaintTo:{
             type:String,
             required:true
+        },
+        date:{
+            type:Date,
+            default:Date.now
         }
     }
 )

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import user from './user.js'
 let newsschema=mongoose.Schema(
     {
         news:{
@@ -15,8 +15,8 @@ let newsschema=mongoose.Schema(
             required:true
         },
         userid:{
-            type:String,
-            required:true
+            type:mongoose.Types.ObjectId,
+            ref:user
         }
     }
 )

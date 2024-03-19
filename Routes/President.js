@@ -2,6 +2,8 @@ import express from 'express'
 import Notification from '../Models/notification.js';
 import Meeting from '../Models/meeting.js';
 import News from '../Models/news.js';
+import ward from '../Models/ward.js';
+import User from '../Models/user.js';
 
 const router=express()
 
@@ -41,5 +43,23 @@ router.post('/addnews',async(req,res)=>{
     catch(e){
         res.json(e.message)
     }
+})
+router.post('/addward',async(req,res)=>{
+    try{
+        console.log(req.body)
+        let newward=new ward(req.body)
+        console.log(newward,'new ward');
+        let response=await newward.save()
+        res.json(response)
+    }
+    catch(e){
+        res.json(e.message)
+    }
+})
+router.get('/viewward',async(req,res)=>{
+
+   let response=await ward.find()
+   console.log(response)
+   res.json(response)
 })
 export default router

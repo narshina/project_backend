@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.js";
 
 let notificationschema=mongoose.Schema(
     {
@@ -7,8 +8,8 @@ let notificationschema=mongoose.Schema(
         required:true
        },
        userid:{
-        type:String,
-        required:String
+        type:mongoose.Types.ObjectId,
+        ref:User
        }
     }
 )
