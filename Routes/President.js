@@ -62,4 +62,20 @@ router.get('/viewward',async(req,res)=>{
    console.log(response)
    res.json(response)
 })
+router.get('/vsecretary',async(req,res)=>{
+   
+    let response=await User.find({usertype:'secretary'})
+    console.log(response)
+    res.json(response)
+})
+router.get('/viewsecs',async(req,res)=>{
+    let response=await User.findOne({usertype:'secretary'})
+    console.log(response)
+    res.json(response)
+})
+router.get('/vmember',async(req,res)=>{
+    let response=await User.find({usertype:'member'})
+    console.log(response)
+    res.json(response)
+})
 export default router

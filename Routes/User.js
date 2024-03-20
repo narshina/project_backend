@@ -1,12 +1,26 @@
 import express from 'express'
 import User from '../Models/user.js'
 import complaint from '../Models/complaint.js'
+import meeting from '../Models/meeting.js'
+import { upload } from '../multer.js'
 
 let router=express()
 
 
-router.post('/register',async(req,res)=>{
+router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(req,res)=>{
     try{
+        console.log(req.body);
+        console.log(req.files,'sdds');
+        if(req.files['photo']){
+
+            const imagePath = req.files['photo'][0].filename;
+            req.body={...req.body,photo:imagePath}
+        }
+        if(req.files['idproof']){
+            
+            const idproof = req.files['idproof'][0].filename;
+            req.body={...req.body,idproof:idproof}
+        }
         console.log(req.body)
         let newUser=new User(req.body)
         console.log(newUser,'new user');
@@ -14,6 +28,7 @@ router.post('/register',async(req,res)=>{
         res.json(response)
     }
     catch(e){
+        console.log(e);
         res.json(e.message)
     }
 })
@@ -50,12 +65,24 @@ router.post('/postcomplaint',async(req,res)=>{
         res.json(e.message)
     }
 })
-router.post('/viewmeeting/:id',async(req,res)=>{
-       console.log(req.params.id)
-       console.log(id)
-       let response=await User.findById(id)
-       console.log(response)
-       res.json(response)
-})
+router.get('/viewmeeting', async (req, res) => {
+    try {
+        let meetings = await meeting.find();
+        let meetingsWithUserDetails = [];
+
+        for (let i = 0; i < meetings.length; i++) {
+            let meetingUser = await User.findById(meetings[i].userid);
+            if (meetingUser) {
+                meetingsWithUserDetails.push({ ...meetings[i]._doc, user: meetingUser });
+            }
+        }
+
+        res.json(meetingsWithUserDetails);
+        console.log(meetingsWithUserDetails);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 export default router

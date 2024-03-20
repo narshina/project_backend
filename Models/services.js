@@ -22,7 +22,11 @@ let serviceschema=mongoose.Schema(
         userid:{
             type:mongoose.Types.ObjectId,
             ref:User
-        }
+        },
+        fields: [{
+            name: String,
+            type: String // You can define more properties like validation rules, options for dropdown, etc.
+        }]
     }
 )
 let services=mongoose.model('services',serviceschema)

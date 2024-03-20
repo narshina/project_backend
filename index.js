@@ -4,7 +4,7 @@ import cors from 'cors'
 const app=express()
 mongoose.connect('mongodb://127.0.0.1:27017/PANCHAYAT')
 .then(()=>console.log('Connected'));
-
+app.use('/uploads', express.static('uploads'));
 
 
 import presidntRouter from './Routes/President.js'
