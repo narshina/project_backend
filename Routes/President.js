@@ -4,8 +4,10 @@ import Meeting from '../Models/meeting.js';
 import News from '../Models/news.js';
 import ward from '../Models/ward.js';
 import User from '../Models/user.js';
+import { upload } from '../multer.js'
 
 const router=express()
+
 
 router.post('/addnotification',async(req,res)=>{
     try{
@@ -62,16 +64,15 @@ router.get('/viewward',async(req,res)=>{
    console.log(response)
    res.json(response)
 })
-router.get('/vsecretary',async(req,res)=>{
-   
-    let response=await User.find({usertype:'secretary'})
-    console.log(response)
-    res.json(response)
-})
 router.get('/viewsecs',async(req,res)=>{
     let response=await User.findOne({usertype:'secretary'})
     console.log(response)
     res.json(response)
+})
+router.put('/editsecretary',async(req,res)=>{
+    console.log(req.body)
+    let response=await User.find({usertype:'secretary'})
+    console.log(response)
 })
 router.get('/vmember',async(req,res)=>{
     let response=await User.find({usertype:'member'})

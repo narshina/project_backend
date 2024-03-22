@@ -47,10 +47,31 @@ router.get('/viewprofile/:id',async(req,res)=>{
     res.json(response)
 
 })
-router.put('/editprofile/:id',async(req,res)=>{
-    let id=req.params.id
-    console.log(req.body);
+router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"}]),async(req,res)=>{
+    try{
+        console.log(req.body);
+        console.log(req.files,'sdds');
+        if(req.files['photo']){
+
+            const imagePath = req.files['photo'][0].filename;
+            req.body={...req.body,photo:imagePath}
+        }
+        if(req.files['idproof']){
+            
+            const idproof = req.files['idproof'][0].filename;
+            req.body={...req.body,idproof:idproof}
+        }
+       let id=req.params.id
+       console.log(id);
+       console.log(req.body);
     let response=await User.findByIdAndUpdate(id,req.body)
+    res.json(response)
+    }
+    catch(e){
+        console.log(e);
+        res.json(e.message)
+    }
+
 })
 router.post('/postcomplaint',async(req,res)=>{
     try{
