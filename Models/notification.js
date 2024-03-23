@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "./user.js";
+import { time } from "console";
 
 let notificationschema=mongoose.Schema(
     {
@@ -10,6 +11,10 @@ let notificationschema=mongoose.Schema(
        userid:{
         type:mongoose.Types.ObjectId,
         ref:User
+       },
+       date:{
+        type:Date,
+        default:Date.now
        }
     }
 )

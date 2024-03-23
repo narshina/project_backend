@@ -5,6 +5,7 @@ import News from '../Models/news.js';
 import ward from '../Models/ward.js';
 import User from '../Models/user.js';
 import { upload } from '../multer.js'
+import category from '../Models/category.js';
 
 const router=express()
 
@@ -15,6 +16,18 @@ router.post('/addnotification',async(req,res)=>{
         let newNotification=new Notification(req.body)
         console.log(newNotification,'new Notification');
         let response=await newNotification.save()
+        res.json(response)
+    }
+    catch(e){
+        res.json(e.message)
+    }
+})
+router.post('/addcategory',async(req,res)=>{
+    try{
+        console.log(req.body)
+        let newcategory=new category(req.body)
+        console.log(newcategory,'new category');
+        let response=await newcategory.save()
         res.json(response)
     }
     catch(e){
@@ -64,6 +77,11 @@ router.get('/viewward',async(req,res)=>{
    console.log(response)
    res.json(response)
 })
+router.get('/vcategory',async(req,res)=>{
+    let response=await category.find()
+    console.log(response)
+    res.json(response)
+})
 router.get('/viewsecs',async(req,res)=>{
     let response=await User.findOne({usertype:'secretary'})
     console.log(response)
@@ -76,6 +94,11 @@ router.put('/editsecretary',async(req,res)=>{
 })
 router.get('/vmember',async(req,res)=>{
     let response=await User.find({usertype:'member'})
+    console.log(response)
+    res.json(response)
+})
+router.get('/vnotification',async(req,res)=>{
+    let response=await Notification.find()
     console.log(response)
     res.json(response)
 })
