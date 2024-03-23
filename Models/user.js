@@ -53,8 +53,7 @@ let userSchema=mongoose.Schema(
             
         },
         district:{
-            type:String,
-        
+            type:String
         },
         pincode:{
             type:String,

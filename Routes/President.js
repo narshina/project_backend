@@ -6,6 +6,7 @@ import ward from '../Models/ward.js';
 import User from '../Models/user.js';
 import { upload } from '../multer.js'
 import category from '../Models/category.js';
+import { json } from 'stream/consumers';
 
 const router=express()
 
@@ -95,6 +96,11 @@ router.put('/editsecretary',async(req,res)=>{
 router.get('/vmember',async(req,res)=>{
     let response=await User.find({usertype:'member'})
     console.log(response)
+    res.json(response)
+})
+router.get('/vstaff',async(req,res)=>{
+    let response=await User.find({usertype:'staff'})
+    console.log(response);
     res.json(response)
 })
 router.get('/vnotification',async(req,res)=>{
