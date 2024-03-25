@@ -3,6 +3,7 @@ import User from '../Models/user.js'
 import complaint from '../Models/complaint.js'
 import meeting from '../Models/meeting.js'
 import { upload } from '../multer.js'
+import Notification from '../Models/notification.js'
 
 let router=express()
 
@@ -73,6 +74,15 @@ router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"}]),a
     }
 
 })
+
+router.put('/Usermanage/:id'),async(req,res)=>{
+    let id=req.params.id
+    console.log(req.body)
+    let response=await User.findByIdAndUpdate(id,req.body)
+    console.log(response);
+}
+
+
 router.post('/postcomplaint',async(req,res)=>{
     try{
         
@@ -105,5 +115,28 @@ router.get('/viewmeeting', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+router.get('/viewnotificaion', async (req, res) => {
+    try {
+        let notifications = await Notification.find();
+        console.log(notifications);
+        let notificationsWithUserDetails = [];
+
+        for (let i = 0; i < notifications.length; i++) {
+            let notificationUser = await User.findById(notifications[i].userid);
+            console.log(notificationUser);
+            if (notificationUser) {
+                notificationsWithUserDetails.push({ ...notifications[i]._doc, user: notificationUser });
+            }
+        }
+
+        res.json(notificationsWithUserDetails);
+        console.log(notificationsWithUserDetails);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
 
 export default router

@@ -103,9 +103,26 @@ router.get('/vstaff',async(req,res)=>{
     console.log(response);
     res.json(response)
 })
+router.get('/vuser',async(req,res)=>{
+    let response=await User.find({usertype:'user'})
+    console.log(response)
+    res.json(response)
+})
+
 router.get('/vnotification',async(req,res)=>{
     let response=await Notification.find()
     console.log(response)
     res.json(response)
+})
+router.get('/vmeet',async(req,res)=>{
+    let response=await Meeting.find()
+    console.log(response)
+    res.json(response)
+})
+router.put('/manageUser/:id',async (req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    console.log(req.body)
+    let response=await User.findByIdAndUpdate(id,req.body)
 })
 export default router

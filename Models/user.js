@@ -78,6 +78,10 @@ let userSchema=mongoose.Schema(
         category:{
              type:String
         },
+        status:{
+            type:String,
+            default:'pending'
+        }
     }
 )
 let User=mongoose.model('user',userSchema)
