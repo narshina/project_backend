@@ -7,6 +7,7 @@ import User from '../Models/user.js';
 import { upload } from '../multer.js'
 import category from '../Models/category.js';
 import { json } from 'stream/consumers';
+import { Console } from 'console';
 
 const router=express()
 
@@ -119,10 +120,26 @@ router.get('/vmeet',async(req,res)=>{
     console.log(response)
     res.json(response)
 })
+router.get('/vnews',async(req,res)=>{
+    let response=await News.find()
+    console.log(response);
+    res.json(response)
+})
 router.put('/manageUser/:id',async (req,res)=>{
     let id=req.params.id
     console.log(id);
     console.log(req.body)
     let response=await User.findByIdAndUpdate(id,req.body)
 })
+router.put('/editmeet/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(req.body);
+    let response=await Meeting.findByIdAndUpdate(id,req.body)
+})
+router.put('/editnot/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(req.body);
+    let response=await News.findByIdAndUpdate(id,req.body)
+})
+
 export default router
