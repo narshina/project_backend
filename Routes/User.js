@@ -6,6 +6,7 @@ import { upload } from '../multer.js'
 import Notification from '../Models/notification.js'
 import fields from '../Models/fielda.js'
 
+
 let router=express()
 
 
@@ -82,6 +83,19 @@ router.post('/postcomplaint',async(req,res)=>{
     try{
         
         console.log(req.body)
+        let users=await User.findById(req.body.userid)
+        if(req.body.complaintTo=='wardmember'){
+
+            let member=await User.findOne({wardNumber:users.wardNumber,usertype:'member'})
+            console.log(member,'members');
+            req.body={...req.body,complaintTo:member._id}
+        }
+        if(req.body.complaintTo=='president'){
+
+            let president=await User.findOne({usertype:'president'})
+            console.log(president,'presidenta');
+            req.body={...req.body,complaintTo:president._id}
+        }
         let newComplaint=new complaint(req.body)
         console.log(newComplaint,'new complaint')
         let response=await newComplaint.save()
@@ -137,6 +151,22 @@ router.get('/viewfield/:id',async(req,res)=>{
     let response=await fields.findById(id)
     console.log(response);
     res.json(response)
+})
+router.get('/vcom/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    
+    let response=await complaint.find({complaintTo:id})
+    let responseData=[]
+    for (let x of response){
+        let userdetails=await User.findById(x.userid)
+        responseData.push({
+            complaint:x,
+            user:userdetails
+        })
+    }
+    res.json(responseData)
+    
 })
 
 

@@ -15,8 +15,8 @@ let complaintschema=mongoose.Schema(
             ref:User
         },
         complaintTo:{
-            type:String,
-            required:true
+            type:mongoose.Types.ObjectId,
+            ref:User
         },
         date:{
             type:Date,
