@@ -73,6 +73,12 @@ router.post('/addward',async(req,res)=>{
         res.json(e.message)
     }
 })
+// router.post('/comreply',async(req,res)=>{
+//     try{
+//         console.log(req.body)
+//         let newreply=new
+//     }
+// })
 router.get('/viewward',async(req,res)=>{
 
    let response=await ward.find()

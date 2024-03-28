@@ -19,10 +19,22 @@ router.post('/addservice',async(req,res)=>{
     }
 })
 router.get('/vservice',async(req,res)=>{
-    let id=req.params.id
-    console.log(id)
     let response=await services.find()
     console.log(response)
+    res.json(response)
+})
+router.get('/vservice/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id)
+    let response=await services.findById(id)
+    console.log(response)
+    res.json(response)
+})
+router.get('/vform/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    let response=await fields.findById(id)
+    console.log(response);
     res.json(response)
 })
 router.post('/addfield',async(req,res)=>{
