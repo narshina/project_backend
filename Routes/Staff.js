@@ -33,9 +33,17 @@ router.get('/vservice/:id',async(req,res)=>{
 router.get('/vform/:id',async(req,res)=>{
     let id=req.params.id
     console.log(id);
-    let response=await fields.findById(id)
+    let response=await fields.find({servicesid:id})
+    let responseData=[]
+    for(let x of response){
+        let servicedetails=await services.findById(x.servicesid)
+        responseData.push({
+            field:x,
+            service:servicedetails
+        })
+    }
     console.log(response);
-    res.json(response)
+    res.json(responseData)
 })
 router.post('/addfield',async(req,res)=>{
     try{
@@ -50,5 +58,4 @@ router.post('/addfield',async(req,res)=>{
         res.json(e.message)
     }
 })
-
 export default router

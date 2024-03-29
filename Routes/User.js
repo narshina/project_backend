@@ -5,6 +5,7 @@ import meeting from '../Models/meeting.js'
 import { upload } from '../multer.js'
 import Notification from '../Models/notification.js'
 import fields from '../Models/fielda.js'
+import mongoose from 'mongoose'
 
 
 let router=express()
@@ -168,6 +169,22 @@ router.get('/vcom/:id',async(req,res)=>{
     res.json(responseData)
     
 })
+router.post('/submitform', upload.single('document'), async (req, res) => {
+    try {
+        console.log(req.body);
+        console.log(req.file, 'sdds');
+        if (req.file) {
+            const imagePath = req.file.filename;
+            req.body = { ...req.body, document: imagePath };
+        }
+        console.log(req.body);
+        let response = await mongoose.connection.collection('application').insertOne(req.body)
+        res.json(response);
+    } catch (e) {
+        console.log(e);
+        res.json(e.message);
+    }
+});
 
 
 export default router
