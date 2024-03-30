@@ -3,6 +3,7 @@ import Staff from '../Models/services.js'
 import services from '../Models/services.js'
 import { log } from 'console'
 import fields from '../Models/fielda.js'
+import mongoose from 'mongoose'
 
 const router=express()
 
@@ -29,6 +30,26 @@ router.get('/vservice/:id',async(req,res)=>{
     let response=await services.findById(id)
     console.log(response)
     res.json(response)
+})
+router.get('/vapply',async(req,res)=>{
+    let id=req.params.id
+    console.log(id)
+    let servicedetails=await mongoose.connection.collection('application').find().toArray()
+    console.log(servicedetails);
+    let responseData=[]
+    for(let x of servicedetails){
+        let response=await services.findById(x.serviceId)
+        console.log(response);
+    responseData.push({
+        application:x,
+        service:response
+    })
+    }
+    res.json(responseData)
+})
+router.get('/applydetail/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id)
 })
 router.get('/vform/:id',async(req,res)=>{
     let id=req.params.id

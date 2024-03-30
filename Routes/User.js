@@ -169,14 +169,17 @@ router.get('/vcom/:id',async(req,res)=>{
     res.json(responseData)
     
 })
-router.post('/submitform', upload.single('document'), async (req, res) => {
+router.post('/submitform', upload.single('photo'), async (req, res) => {
     try {
         console.log(req.body);
+        let UserId=new mongoose.Types.ObjectId(req.body.userId)
+        let ServiceId=new mongoose.Types.ObjectId(req.body.serviceId)
         console.log(req.file, 'sdds');
         if (req.file) {
             const imagePath = req.file.filename;
             req.body = { ...req.body, document: imagePath };
         }
+        req.body={...req.body,userId:UserId,serviceId:ServiceId}
         console.log(req.body);
         let response = await mongoose.connection.collection('application').insertOne(req.body)
         res.json(response);
