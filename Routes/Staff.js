@@ -1,9 +1,10 @@
-import express from 'express'
+import express, { application } from 'express'
 import Staff from '../Models/services.js'
 import services from '../Models/services.js'
 import { log } from 'console'
 import fields from '../Models/fielda.js'
 import mongoose from 'mongoose'
+import User from '../Models/user.js'
 
 const router=express()
 
@@ -48,8 +49,14 @@ router.get('/vapply',async(req,res)=>{
     res.json(responseData)
 })
 router.get('/applydetail/:id',async(req,res)=>{
-    let id=req.params.id
+    let id=new mongoose.Types.ObjectId(req.params.id)
     console.log(id)
+    let response=await mongoose.connection.collection('application').findOne({_id:id})
+    let users=await User.findById(response.userId)
+    let service=await services.findById(response.serviceId)
+    console.log(response)
+    res.json({application:response,users:users,services:service})
+    
 })
 router.get('/vform/:id',async(req,res)=>{
     let id=req.params.id
@@ -78,5 +85,12 @@ router.post('/addfield',async(req,res)=>{
     catch(e){
         res.json(e.message)
     }
+})
+router.put('/manageapplication/:id',async (req,res)=>{
+    let id=new mongoose.Types.ObjectId(req.params.id)
+    console.log(id);
+    console.log(req.body)
+    let response=await mongoose.connection.collection('application').updateOne({_id:id},{$set:req.body})
+    console.log(response);
 })
 export default router
