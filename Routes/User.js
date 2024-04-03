@@ -125,6 +125,15 @@ router.get('/viewmeeting', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+// router.get('/viewmeetuser',async(req,res)=>{
+//     let id=req.params.id
+//     console.log(id);
+//     let ward=await User.findById(id)
+
+//     let response=await fields.findById(id)
+//     console.log(response);
+//     res.json(response)
+// })
 router.get('/viewnotificaion', async (req, res) => {
     try {
         let notifications = await Notification.find();

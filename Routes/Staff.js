@@ -6,6 +6,7 @@ import fields from '../Models/fielda.js'
 import mongoose from 'mongoose'
 import User from '../Models/user.js'
 import { upload } from '../multer.js'
+import category from '../Models/category.js'
 
 const router=express()
 
@@ -33,9 +34,11 @@ router.get('/vservice/:id',async(req,res)=>{
     console.log(response)
     res.json(response)
 })
-router.get('/vapply',async(req,res)=>{
+router.get('/vapply/:id',async(req,res)=>{
     let id=req.params.id
     console.log(id)
+    let users=await User.findById(id)
+    if(users.category == 'head clerk'){
     let servicedetails=await mongoose.connection.collection('application').find().toArray()
     console.log(servicedetails);
     let responseData=[]
@@ -46,13 +49,16 @@ router.get('/vapply',async(req,res)=>{
         application:x,
         service:response
     })
-    }
-    res.json(responseData)
+}
+res.json(responseData)
+}
 })
+
+
 router.get('/vapplyuser/:id',async(req,res)=>{
-    let id=req.params.id
+    let id=new mongoose.Types.ObjectId(req.params.id)
     console.log(id)
-    let servicedetails=await mongoose.connection.collection('application').find().toArray()
+    let servicedetails=await mongoose.connection.collection('application').find({userId:id}).toArray()
     console.log(servicedetails);
     let responseData=[]
     for(let x of servicedetails){
@@ -93,6 +99,16 @@ router.get('/applydetail/:id',async(req,res)=>{
     let service=await services.findById(response.serviceId)
     console.log(response)
     res.json({application:response,users:users,services:service})
+    
+})
+router.get('/applydetailuser/:id',async(req,res)=>{
+    let id=new mongoose.Types.ObjectId(req.params.id)
+    console.log(id)
+    let response=await mongoose.connection.collection('application').findOne({_id:id})
+    // let users=await User.findById(response)
+    let service=await services.findById(response.serviceId)
+    console.log(response)
+    res.json({application:response,services:service})
     
 })
 
