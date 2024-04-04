@@ -125,15 +125,21 @@ router.get('/viewmeeting', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
-// router.get('/viewmeetuser',async(req,res)=>{
-//     let id=req.params.id
-//     console.log(id);
-//     let ward=await User.findById(id)
 
-//     let response=await fields.findById(id)
-//     console.log(response);
-//     res.json(response)
-// })
+router.get('/viewmeetuser/:id',async(req,res)=>{
+    let id=new mongoose.Types.ObjectId(req.params.id)
+    console.log(id);
+    let response=await User.findById(id)
+    console.log(response,'===========================');
+    let member=await User.findOne({wardNumber:response.wardNumber,usertype:'member'})
+    console.log(member._id,'---------------------------------------');
+    let meetings=await meeting.find({userid:member._id})
+    console.log(meetings,'==============a=s=a');
+    console.log(response);
+    console.log(member);
+    res.json(meetings)
+})
+
 router.get('/viewnotificaion', async (req, res) => {
     try {
         let notifications = await Notification.find();
@@ -188,7 +194,7 @@ router.post('/submitform', upload.single('photo'), async (req, res) => {
             const imagePath = req.file.filename;
             req.body = { ...req.body, document: imagePath };
         }
-        req.body={...req.body,userId:UserId,serviceId:ServiceId}
+        req.body={...req.body,userId:UserId,serviceId:ServiceId,applicationDate:new Date}
         console.log(req.body);
         let response = await mongoose.connection.collection('application').insertOne(req.body)
         res.json(response);
