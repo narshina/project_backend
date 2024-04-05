@@ -5,7 +5,19 @@ const app=express()
 mongoose.connect('mongodb://127.0.0.1:27017/PANCHAYAT')
 .then(()=>console.log('Connected'));
 app.use('/uploads', express.static('uploads'));
+import { dirname, join ,} from 'node:path';
+import { fileURLToPath, } from 'node:url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
+app.get('/download/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = join(__dirname, 'uploads', filename);
+
+    // Set headers to force download
+    res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+    res.sendFile(filePath);
+});
 
 import presidntRouter from './Routes/President.js'
 import secretaryRouter from './Routes/Secretary.js'

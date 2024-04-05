@@ -55,6 +55,7 @@ res.json(responseData)
 })
 
 
+
 router.get('/vapplyuser/:id',async(req,res)=>{
     let id=new mongoose.Types.ObjectId(req.params.id)
     console.log(id)
@@ -87,6 +88,23 @@ router.get('/vapplyPresident',async(req,res)=>{
         service:response
     })
     }
+    res.json(responseData)
+})
+router.get('/vhistory',async(req,res)=>{
+    let servicedetails=await mongoose.connection.collection('application').find({status:"accepted by secretary"}).toArray()
+    console.log(servicedetails);
+    let responseData=[]
+    for(let x of servicedetails){
+        let response=await services.findById(x.serviceId)
+        let users=await User.findById(x.userId)
+        console.log(response);
+    responseData.push({
+        application:x,
+        service:response,
+        user:users
+    })
+    }
+    console.log(responseData);
     res.json(responseData)
 })
 

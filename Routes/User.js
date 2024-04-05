@@ -51,6 +51,14 @@ router.get('/viewprofile/:id',async(req,res)=>{
     res.json(response)
 
 })
+router.get('/viewreply/:id',async(req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    let response=await complaint.find({userid:id})
+    console.log(response)
+    res.json(response)
+
+})
 router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"}]),async(req,res)=>{
     try{
         console.log(req.body);

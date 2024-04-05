@@ -8,6 +8,7 @@ import { upload } from '../multer.js'
 import category from '../Models/category.js';
 import { json } from 'stream/consumers';
 import { Console } from 'console';
+import complaint from '../Models/complaint.js';
 
 const router=express()
 
@@ -137,6 +138,15 @@ router.put('/manageUser/:id',async (req,res)=>{
     console.log(req.body)
     let response=await User.findByIdAndUpdate(id,req.body)
 })
+router.put('/replycom/:id',async (req,res)=>{
+    let id=req.params.id
+    console.log(id);
+    console.log(req.body)
+    let response=await complaint.findByIdAndUpdate(id,req.body)
+    res.json(response)
+
+})
+
 router.put('/editmeet/:id',async(req,res)=>{
     let id=req.params.id
     console.log(req.body);
@@ -147,5 +157,6 @@ router.put('/editnot/:id',async(req,res)=>{
     console.log(req.body);
     let response=await News.findByIdAndUpdate(id,req.body)
 })
+
 
 export default router
