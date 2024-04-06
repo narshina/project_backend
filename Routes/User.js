@@ -6,6 +6,7 @@ import { upload } from '../multer.js'
 import Notification from '../Models/notification.js'
 import fields from '../Models/fielda.js'
 import mongoose from 'mongoose'
+import News from '../Models/news.js'
 
 
 let router=express()
@@ -211,6 +212,14 @@ router.post('/submitform', upload.single('photo'), async (req, res) => {
         res.json(e.message);
     }
 });
-
+router.get('/vnews',async(req,res)=>{
+    let response=await News.find()
+    console.log(response)
+    res.json(response)
+})
+router.delete('/deletenews/:id',async(req,res)=>{
+    let id=req.params.id
+    let response=await News.findByIdAndDelete(id)
+})
 
 export default router

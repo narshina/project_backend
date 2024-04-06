@@ -15,10 +15,6 @@ let serviceschema=mongoose.Schema(
             type:String,
             required:true
         },
-        fees:{
-            type:String,
-            required:true
-        },
         userid:{
             type:mongoose.Types.ObjectId,
             ref:User

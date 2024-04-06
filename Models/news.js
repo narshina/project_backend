@@ -7,12 +7,8 @@ let newsschema=mongoose.Schema(
             required:true
         },
         date:{
-            type:String,
-            required:true
-        },
-        time:{
-            type:String,
-            required:true
+            type:Date,
+            default:Date.now
         },
         userid:{
             type:mongoose.Types.ObjectId,

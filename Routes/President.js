@@ -9,6 +9,7 @@ import category from '../Models/category.js';
 import { json } from 'stream/consumers';
 import { Console } from 'console';
 import complaint from '../Models/complaint.js';
+import meeting from '../Models/meeting.js';
 
 const router=express()
 
@@ -103,7 +104,6 @@ router.put('/editsecretary',async(req,res)=>{
 })
 router.get('/vmember',async(req,res)=>{
     let response=await User.find({usertype:'member'})
-    console.log(response)
     res.json(response)
 })
 router.get('/vstaff',async(req,res)=>{
@@ -155,7 +155,16 @@ router.put('/editmeet/:id',async(req,res)=>{
 router.put('/editnot/:id',async(req,res)=>{
     let id=req.params.id
     console.log(req.body);
-    let response=await News.findByIdAndUpdate(id,req.body)
+    let response=await Notification.findByIdAndUpdate(id,req.body)
+    console.log(response);
+    res.json(response)
+})
+router.get('/presmeet',async(req,res)=>{
+    let response=await User.findOne({usertype:'president'})
+    console.log(response);
+    let meet=await meeting.find({userid:response._id})
+    res.json(meet)
+
 })
 
 
