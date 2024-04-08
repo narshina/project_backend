@@ -166,6 +166,12 @@ router.get('/presmeet',async(req,res)=>{
     res.json(meet)
 
 })
+router.get('/presnot',async(req,res)=>{
+    let response=await User.findOne({usertype:'president'})
+    console.log(response)
+    let not=await Notification.find({userid:response._id})
+    res.json(not)
+})
 
 
 export default router

@@ -221,5 +221,12 @@ router.delete('/deletenews/:id',async(req,res)=>{
     let id=req.params.id
     let response=await News.findByIdAndDelete(id)
 })
-
+router.delete('/deletemeeting/:id',async(req,res)=>{
+    let id=req.params.id
+    let response=await meeting.findByIdAndDelete(id)
+})
+router.delete('/deletenot/:id',async(req,res)=>{
+    let id=req.params.id
+    let response=await Notification.findByIdAndDelete(id)
+})
 export default router
