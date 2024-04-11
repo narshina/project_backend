@@ -229,4 +229,15 @@ router.delete('/deletenot/:id',async(req,res)=>{
     let id=req.params.id
     let response=await Notification.findByIdAndDelete(id)
 })
+router.delete('/deleteuser/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        let response = await User.findByIdAndDelete(id);
+        res.json(response)
+    } catch (error) {
+        res.json(error.message)
+    }
+});
+
+
 export default router

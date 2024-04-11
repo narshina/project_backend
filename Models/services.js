@@ -8,7 +8,7 @@ let serviceschema=mongoose.Schema(
             required:true
         },
         processingTime:{
-            type:String,
+            type:Number,
             required:true
         },
         requirement:{

@@ -39,7 +39,7 @@ router.get('/vapply/:id',async(req,res)=>{
     console.log(id)
     let users=await User.findById(id)
     if(users.category == 'head clerk'){
-    let servicedetails=await mongoose.connection.collection('application').find().toArray()
+    let servicedetails=await mongoose.connection.collection('application').find({status:'pending'}).toArray()
     console.log(servicedetails);
     let responseData=[]
     for(let x of servicedetails){
@@ -77,7 +77,7 @@ router.get('/vapplyuser/:id',async(req,res)=>{
 router.get('/vapplyPresident',async(req,res)=>{
     let id=req.params.id
     console.log(id)
-    let servicedetails=await mongoose.connection.collection('application').find({status:'accepted by staff'}).toArray()
+    let servicedetails=await mongoose.connection.collection('application').find({status:'verified by staff'}).toArray()
     console.log(servicedetails);
     let responseData=[]
     for(let x of servicedetails){
@@ -170,6 +170,13 @@ router.put('/manageapplicationpresident/:id',upload.single('finalDocument'),asyn
     console.log(id);
     console.log(req.file);
     req.body={...req.body,finalDocument:req.file.filename}
+    console.log(req.body)
+    let response=await mongoose.connection.collection('application').updateOne({_id:id},{$set:req.body})
+    console.log(response);
+})
+router.put('/reject/:id',async (req,res)=>{
+    let id=new mongoose.Types.ObjectId(req.params.id)
+    console.log(id);
     console.log(req.body)
     let response=await mongoose.connection.collection('application').updateOne({_id:id},{$set:req.body})
     console.log(response);
