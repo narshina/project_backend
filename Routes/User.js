@@ -14,8 +14,6 @@ let router=express()
 
 router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(req,res)=>{
     try{
-        console.log(req.body);
-        console.log(req.files,'sdds');
         if(req.files['photo']){
 
             const imagePath = req.files['photo'][0].filename;
@@ -26,9 +24,7 @@ router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(
             const idproof = req.files['idproof'][0].filename;
             req.body={...req.body,idproof:idproof}
         }
-        console.log(req.body)
         let newUser=new User(req.body)
-        console.log(newUser,'new user');
         let response=await newUser.save()
         res.json(response)
     }
@@ -238,6 +234,10 @@ router.delete('/deleteuser/:id', async (req, res) => {
         res.json(error.message)
     }
 });
-
+router.post('/loginaccess',async (req,res)=>{
+    let response=await  User.findOne(req.body)
+    console.log(response);
+    res.json(response)
+})
 
 export default router
