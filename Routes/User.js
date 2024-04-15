@@ -36,7 +36,8 @@ router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(
 
 router.post('/login',async (req,res)=>{
     console.log(req.body);
-    let user=await User.findOne(req.body)
+    const {email,password}=req.body
+    let user=await User.findOne({email:email,password:password})
     console.log(user);
     res.json(user)
 })
