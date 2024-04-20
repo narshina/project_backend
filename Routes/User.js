@@ -12,7 +12,7 @@ import News from '../Models/news.js'
 let router=express()
 
 
-router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(req,res)=>{
+router.post('/register',upload.fields([{name:'photo'},{name:"idproof"},{name:'pancard'}]), async(req,res)=>{
     try{
         if(req.files['photo']){
 
@@ -23,6 +23,11 @@ router.post('/register',upload.fields([{name:'photo'},{name:"idproof"}]), async(
             
             const idproof = req.files['idproof'][0].filename;
             req.body={...req.body,idproof:idproof}
+        }
+        if(req.files['pancard']){
+            
+            const pancards = req.files['pancard'][0].filename;
+            req.body={...req.body,pancard:pancards}
         }
         let newUser=new User(req.body)
         let response=await newUser.save()

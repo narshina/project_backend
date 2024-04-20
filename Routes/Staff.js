@@ -113,8 +113,8 @@ router.get('/applydetail/:id',async(req,res)=>{
     let id=new mongoose.Types.ObjectId(req.params.id)
     console.log(id)
     let response=await mongoose.connection.collection('application').findOne({_id:id})
-    let users=await User.findById(response.userId)
-    let service=await services.findById(response.serviceId)
+    let users=await User.findById(response?.userId)
+    let service=await services.findById(response?.serviceId)
     console.log(response)
     res.json({application:response,users:users,services:service})
     

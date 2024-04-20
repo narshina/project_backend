@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
-let userSchema=mongoose.Schema(
+let userSchema=new mongoose.Schema(
     {
         name:{
             type:String,
@@ -81,6 +82,21 @@ let userSchema=mongoose.Schema(
         status:{
             type:String,
             default:'pending'
+        },
+        currenthouse:{
+            type:String
+        },
+        currentstreet:{
+            type:String
+        },
+        currentpost:{
+            type:String
+        },
+        currentpin:{
+            type:String
+        },
+        pancard:{
+            type:String
         }
     }
 )
