@@ -12,32 +12,51 @@ import News from '../Models/news.js'
 let router=express()
 
 
-router.post('/register',upload.fields([{name:'photo'},{name:"idproof"},{name:'pancard'}]), async(req,res)=>{
-    try{
-        if(req.files['photo']){
-
+router.post('/register', upload.fields([{ name: 'photo' }, { name: "idproof" }, { name: 'pancard' }]), async (req, res) => {
+    try {
+        if (req.files['photo']) {
             const imagePath = req.files['photo'][0].filename;
-            req.body={...req.body,photo:imagePath}
+            req.body = { ...req.body, photo: imagePath };
         }
-        if(req.files['idproof']){
-            
+        if (req.files['idproof']) {
             const idproof = req.files['idproof'][0].filename;
-            req.body={...req.body,idproof:idproof}
+            req.body = { ...req.body, idproof: idproof };
         }
-        if(req.files['pancard']){
-            
+        if (req.files['pancard']) {
             const pancards = req.files['pancard'][0].filename;
-            req.body={...req.body,pancard:pancards}
+            req.body = { ...req.body, pancard: pancards };
         }
-        let newUser=new User(req.body)
-        let response=await newUser.save()
-        res.json(response)
-    }
-    catch(e){
+
+        // Check if a secretary already exists
+        if (req.body.usertype === 'secretary') {
+            const existingSecretary = await User.findOne({ usertype: 'secretary' });
+            if (existingSecretary) {
+                return res.status(400).json('Secretary already added');
+            }
+        }
+        if (req.body.usertype === 'member') {
+            // Check if a ward member already exists for the given ward
+            const existingWardMember = await User.findOne({ usertype: 'member', wardNumber: req.body.wardNumber });
+            if (existingWardMember) {
+                return res.status(400).json('Ward member already added for this ward');
+            }
+        }
+        const existingmail = await User.findOne({ email:req.body.email });
+
+        if(existingmail){
+            return res.status(400).json('mail already exist');
+
+        }
+
+        let newUser = new User(req.body);
+        let response = await newUser.save();
+        res.json(response);
+    } catch (e) {
         console.log(e);
-        res.json(e.message)
+        res.status(500).json({ error: e.message });
     }
-})
+});
+
 
 router.post('/login',async (req,res)=>{
     console.log(req.body);
@@ -62,7 +81,7 @@ router.get('/viewreply/:id',async(req,res)=>{
     res.json(response)
 
 })
-router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"}]),async(req,res)=>{
+router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"},{name:'pancard'}]),async(req,res)=>{
     try{
         console.log(req.body);
         console.log(req.files,'sdds');
@@ -75,6 +94,11 @@ router.put('/editprofile/:id',upload.fields([{name:'photo'},{name:"idproof"}]),a
             
             const idproof = req.files['idproof'][0].filename;
             req.body={...req.body,idproof:idproof}
+        }
+        if(req.files['pancard']){
+            
+            const pancards = req.files['pancard'][0].filename;
+            req.body={...req.body,pancard:pancards}
         }
        let id=req.params.id
        console.log(id);
