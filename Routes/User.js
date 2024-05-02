@@ -14,6 +14,8 @@ let router=express()
 
 router.post('/register', upload.fields([{ name: 'photo' }, { name: "idproof" }, { name: 'pancard' }]), async (req, res) => {
     try {
+        if(req.files){
+
         if (req.files['photo']) {
             const imagePath = req.files['photo'][0].filename;
             req.body = { ...req.body, photo: imagePath };
@@ -26,6 +28,7 @@ router.post('/register', upload.fields([{ name: 'photo' }, { name: "idproof" }, 
             const pancards = req.files['pancard'][0].filename;
             req.body = { ...req.body, pancard: pancards };
         }
+    }
 
         // Check if a secretary already exists
         if (req.body.usertype === 'secretary') {
@@ -174,7 +177,19 @@ router.get('/viewmeetuser/:id',async(req,res)=>{
     console.log(member);
     res.json(meetings)
 })
-
+router.get('/viewnotuser/:id',async(req,res)=>{
+    let id=new mongoose.Types.ObjectId(req.params.id)
+    console.log(id);
+    let response=await User.findById(id)
+    console.log(response,'===========================');
+    let member=await User.findOne({wardNumber:response.wardNumber,usertype:'member'})
+    console.log(member._id,'---------------------------------------');
+    let meetings=await Notification.find({userid:member._id})
+    console.log(meetings,'==============a=s=a');
+    console.log(response);
+    console.log(member);
+    res.json(meetings)
+}) 
 router.get('/viewnotificaion', async (req, res) => {
     try {
         let notifications = await Notification.find();
