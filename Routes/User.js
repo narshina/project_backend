@@ -7,9 +7,40 @@ import Notification from '../Models/notification.js'
 import fields from '../Models/fielda.js'
 import mongoose from 'mongoose'
 import News from '../Models/news.js'
+import nodemailer from 'nodemailer'
 
 
 let router=express()
+
+
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'narshina2001@gmail.com',
+    pass: 'ahrv itmb egdz fwjv',
+  },
+});
+
+router.post('/sendOTP', async (req, res) => {
+  const { email } = req.body;
+  const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+  const mailOptions = {
+    from: 'narshina2001@gmail.com',
+    to: email,
+    subject: 'Your OTP for Verification',
+    text: `Your OTP is: ${otp}`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send({ message: 'OTP sent successfully',otp });
+  } catch (error) {
+    console.error('Error sending OTP:', error);
+    res.status(500).send({ error: 'Failed to send OTP' });
+  }
+});
+
 
 
 router.post('/register', upload.fields([{ name: 'photo' }, { name: "idproof" }, { name: 'pancard' }]), async (req, res) => {
@@ -284,5 +315,6 @@ router.post('/loginaccess',async (req,res)=>{
     console.log(response);
     res.json(response)
 })
+
 
 export default router

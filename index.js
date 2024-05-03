@@ -35,15 +35,16 @@ app.use('/User', userRouter)
 
 
 
-app.post('/forgot-password', async (req, res) => {
+app.post('/forgot-password/:email', async (req, res) => {
 
     try {
-        const { email, password } = req.body;
+        let email=req.params.email
+        const { password } = req.body;
 
         if (!email) return res.status(400).json({ message: 'Email is not required' })
         if (!password) return res.status(400).json({ message: 'Password is required' })
 
-        const isMatchMail = await User.findOne({ email: req.body.email })
+        const isMatchMail = await User.findOne({ email: email })
 
         if (!isMatchMail) return res.status(400).json({ message: 'User not exist' })
 
