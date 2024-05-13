@@ -65,21 +65,25 @@ router.post('/register', upload.fields([{ name: 'photo' }, { name: "idproof" }, 
         if (req.body.usertype === 'secretary') {
             const existingSecretary = await User.findOne({ usertype: 'secretary' });
             if (existingSecretary) {
-                return res.status(400).json('Secretary already added');
+                return res.status(400).json({message:'Secretary already added'});
             }
         }
         if (req.body.usertype === 'member') {
             // Check if a ward member already exists for the given ward
             const existingWardMember = await User.findOne({ usertype: 'member', wardNumber: req.body.wardNumber });
             if (existingWardMember) {
-                return res.status(400).json('Ward member already added for this ward');
+                return res.status(400).json({message:'Ward member already added for this ward'});
             }
         }
         const existingmail = await User.findOne({ email:req.body.email });
 
         if(existingmail){
-            return res.status(400).json('mail already exist');
+            return res.status(400).json({message:'mail already exist'});
 
+        }
+        const existphonenumber = await User.findOne({ phoneNumber: req.body.phoneNumber });
+        if (existphonenumber) {
+            return res.status(400).json({ message:'phone number exists' });
         }
 
         let newUser = new User(req.body);
@@ -201,8 +205,7 @@ router.get('/viewmeetuser/:id',async(req,res)=>{
     let response=await User.findById(id)
     console.log(response,'===========================');
     let member=await User.findOne({wardNumber:response.wardNumber,usertype:'member'})
-    console.log(member._id,'---------------------------------------');
-    let meetings=await meeting.find({userid:member._id})
+    let meetings=await meeting.find({userid:member?._id})
     console.log(meetings,'==============a=s=a');
     console.log(response);
     console.log(member);
@@ -214,8 +217,7 @@ router.get('/viewnotuser/:id',async(req,res)=>{
     let response=await User.findById(id)
     console.log(response,'===========================');
     let member=await User.findOne({wardNumber:response.wardNumber,usertype:'member'})
-    console.log(member._id,'---------------------------------------');
-    let meetings=await Notification.find({userid:member._id})
+    let meetings=await Notification.find({userid:member?._id})
     console.log(meetings,'==============a=s=a');
     console.log(response);
     console.log(member);
@@ -254,14 +256,18 @@ router.get('/vcom/:id',async(req,res)=>{
     console.log(id);
     
     let response=await complaint.find({complaintTo:id})
+    console.log(response);
     let responseData=[]
     for (let x of response){
+        if(!x.reply){
         let userdetails=await User.findById(x.userid)
         responseData.push({
             complaint:x,
             user:userdetails
         })
     }
+}
+
     res.json(responseData)
     
 })
