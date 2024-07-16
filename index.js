@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 const app = express()
-mongoose.connect('mongodb://127.0.0.1:27017/PANCHAYAT')
+mongoose.connect('mongodb+srv://narshina2001:KfBEJlN8sy93faHJ@cluster0.isjztjs.mongodb.net/UEP')
     .then(() => console.log('Connected'));
 app.use('/uploads', express.static('uploads'));
 import { dirname, join, } from 'node:path';
